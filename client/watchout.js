@@ -1,6 +1,14 @@
 // start slingin' some d3 here.
 
 
+// settings global variabls here perhaps?
+
+// starting speed,
+// planet count,
+// planet size?
+
+// initiate asteroids data here with random creator!
+
 var astereoidData = [
   {x: 5, y: 10},
   {x: 50, y: 60},
@@ -8,25 +16,13 @@ var astereoidData = [
   {x: 200, y: 150}
 ];
 
-// var astereoidData = {0: ;
-
-var fnKey = function (d) {
-  console.log('d', d);
-
-};
-
+var mousePositionData = [];
 
 var selection;
 var width = 100;
 
 var initializeAsteroids = function() {
   selection = d3.select(".board").selectAll("circle").data(astereoidData);
-
-  console.log(selection);
-
-  // console.log(selection)
-
-
 
   // ENTER
   selection
@@ -49,30 +45,54 @@ var initializeAsteroids = function() {
     // .attr("height", "100px")
     // .attr("xlink:href", "asteroid.png");
 
-
     // position editing here
-
 
   // EXIT
   selection
     .exit()
     .remove();
 };
-
 initializeAsteroids();
 
 
+// var recordNewMousePosition = function() {
+
+// }
+
+// add dragability to asteroid
+// add element to d3 .board
+var addDraggableElement = function() {
+  console.log('adds draggable elemt')
+  d3.select(".board").append("image")
+    .attr("x", 150)
+    .attr("y", 100)
+    .attr("height", "50px")
+    .attr("width", "50px")
+    .attr("xlink:href", "asteroid.png")
+}
+addDraggableElement();
+
+// declare mover function
+var mover = function() {
+  console.log('mover fires')
+  var xPos = d3.event.x - parseInt(d3.select('image').attr("width")) / 2;
+  var yPos = d3.event.y - parseInt(d3.select('image').attr("height")) / 2;
+  console.log('mover report', xPos, yPos)
+  d3.select('image')
+    .attr("x", xPos)
+    .attr("y", yPos);
+}
+// initiate drag listener
+var drag = d3.behavior.drag()
+  .on("drag", function(){
+    mover();
+    recordNewMousePosition()
+  });
+// call drag on image!
+d3.select(".board").select("image").call(drag);
+
+
 var update = function () {
-  console.log('update');
-  // selection
-    // .attr();
-    // no appaending allowed in here.
-  // width -= 10;
-  // var newX = Math.floor(Math.random() * 100) + 300;
-  // var newY = Math.floor(Math.random() * 100) + 300;
-
-  // selection.transition().duration(1000).attr("cx", newX).attr("cy", newY);
-
   // rebuild object with new datapoints
   for (var ast in astereoidData) {
     // console.log(astereoidData[ast].)
@@ -81,17 +101,14 @@ var update = function () {
     // console.log(astereoidData);
   }
 
-
-
   selection
     .transition()
     .duration(1000)
     .attr("cx", function(d) {return d.x})
     .attr("cy", function(d) {return d.y})
-
 };
 
-
+// init timer
 var timer;
 var updatePositions = function(time) {
   update();
@@ -100,7 +117,6 @@ var updatePositions = function(time) {
     update();
   },time);
 };
-
 var stopTimer = function() {
   clearInterval(timer);
 };
