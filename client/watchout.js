@@ -20,7 +20,7 @@ var selection;
 var width = 100;
 
 var initializeAsteroids = function() {
-  selection = d3.select(".board").selectAll("div").data(astereoidData)
+  selection = d3.select(".board").selectAll("circle").data(astereoidData);
 
   console.log(selection);
 
@@ -31,13 +31,27 @@ var initializeAsteroids = function() {
   // ENTER
   selection
     .enter()
-    .append("svg")
-    .attr("width", width)
-    .attr("height", 100)  
-    .append("image")
-    .attr("width", width)
+   
+    // Circle code
+    .append("circle")
+    .attr("cx", function(d) {return d.x})
+    .attr("cy", function(d) {return d.y})
+    .attr("fill", "red")
+    .attr("r", "50")
+    .attr("top", '1000px')
+    .attr("left", '1000px')  
+    .attr("width", width)  
     .attr("height", 100)
-    .attr("xlink:href", "asteroid.png");
+
+    // Image code
+    // .append('image')
+    // .attr("width", "100px")
+    // .attr("height", "100px")
+    // .attr("xlink:href", "asteroid.png");
+
+
+    // position editing here
+
 
   // EXIT
   selection
@@ -53,8 +67,28 @@ var update = function () {
   // selection
     // .attr();
     // no appaending allowed in here.
-  width += 10;
-  selection.transition().duration(1000).attr("width", width)
+  // width -= 10;
+  // var newX = Math.floor(Math.random() * 100) + 300;
+  // var newY = Math.floor(Math.random() * 100) + 300;
+
+  // selection.transition().duration(1000).attr("cx", newX).attr("cy", newY);
+
+  // rebuild object with new datapoints
+  for (var ast in astereoidData) {
+    // console.log(astereoidData[ast].)
+    astereoidData[ast].x = Math.floor( (Math.random() - 0.5 ) * 1000) + 300;
+    astereoidData[ast].y = Math.floor( (Math.random() - 0.5 ) * 1000) + 300;
+    // console.log(astereoidData);
+  }
+
+
+
+  selection
+    .transition()
+    .duration(1000)
+    .attr("cx", function(d) {return d.x})
+    .attr("cy", function(d) {return d.y})
+
 };
 
 
