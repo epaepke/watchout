@@ -8,15 +8,18 @@
 // planet size?
 
 var mouseStartPosition = [300, 100];
+var circleSize = 40;
+var cursorSize = 50;
+var timeInterval = 800;
 // initiate asteroids data here with random creator!
 
 var astereoidData = [
+  {x: 600, y: 400},
+  {x: 600, y: 400},
+  {x: 600, y: 400},
+  {x: 600, y: 400},
+  {x: 600, y: 400},
   {x: 600, y: 400}
-  // {x: 600, y: 400},
-  // {x: 600, y: 400},
-  // {x: 600, y: 400},
-  // {x: 600, y: 400},
-  // {x: 600, y: 400}
 ];
 
 var mousePositionData = mouseStartPosition;
@@ -36,7 +39,7 @@ var initializeAsteroids = function() {
     .attr("cx", function(d) {return d.x})
     .attr("cy", function(d) {return d.y})
     .attr("fill", "red")
-    .attr("r", "50")
+    .attr("r", circleSize)
     .attr("top", '1000px')
     .attr("left", '1000px')  
     .attr("width", width)  
@@ -69,8 +72,8 @@ var addDraggableElement = function() {
   d3.select(".board").append("image")
     .attr("x", mouseStartPosition[0])
     .attr("y", mouseStartPosition[1])
-    .attr("height", "50px")
-    .attr("width", "50px")
+    .attr("height", cursorSize + "px")
+    .attr("width", cursorSize + "px")
     .attr("xlink:href", "asteroid.png")
 }
 addDraggableElement();
@@ -94,6 +97,11 @@ d3.select(".board").select("image").call(drag);
 
 var recordNewMousePosition = function(x, y) {
   // x value
+
+  x = x + (cursorSize / 2);
+  y = y + (cursorSize / 2);
+
+
   mousePositionData[0] = x;
   // y value
   mousePositionData[1] = y;
@@ -117,17 +125,41 @@ var update = function () {
 
   selection
     .transition()
-    .duration(10000)
-    .tween("cx", function (d, t, i) {
-      var ast = d3.select(this);
-      var xStart = ast.attr("cx");
-      var yStart = ast.attr("cy");
-      var xEnd = d.x;
-      var yEnd = d.y;
+    .duration(timeInterval)
+    .tween("cx", function (final1, t, i) {
+      var initial = d3.select(this);
+      var xStart = parseInt( initial.attr("cx") );
+      var yStart = parseInt( initial.attr("cy") );
+      var reldx = (final1.x - xStart);
+      var reldy = (final1.y - yStart);
+
 
       return function (t) {
-        // console.log(mousePositionData);
         
+        // console.log('t ', t);
+        // console.log('start y', yStart);
+        // console.log("reldx ", reldx);
+        // console.log("reldy ", reldy);
+      
+        var xCurrent = xStart + reldx * t;
+        // console.log(xCurrent, "xCurrent = ", xStart, " + ", reldx, " * ", t);
+        
+        var yCurrent = yStart + reldy * t;
+      
+        // console.log('questionable numbers', xCurrent);
+
+        //console.log(xCurrent);
+        //console.log(yCurrent);
+        var xCursor = mousePositionData[0];
+        var yCursor = mousePositionData[1];
+        var dist = Math.sqrt(Math.pow((xCurrent - xCursor),2) + Math.pow((yCurrent - yCursor), 2));
+
+        // console.log(dist);
+        if (dist <= (circleSize + cursorSize) / 2) {
+          console.log("COLLIDED");
+        }
+
+
       }
     })
 
@@ -149,7 +181,7 @@ var stopTimer = function() {
   clearInterval(timer);
 };
 
-updatePositions(10000);
+updatePositions(timeInterval);
 
 
 
