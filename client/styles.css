@@ -3,6 +3,19 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+body, html {
+  background-color: #ffe6cc;
+  margin: 0;
+  padding: 0;
+}
+
+.scoreboard {
+  padding-left: 20px;
+  padding-top: 5px;
+  height: 80px;
+  background-color: white;
+}
+
 .asteroid {
   /*background-color:black;*/
   width: 100%;
@@ -11,6 +24,12 @@ Feel free to use it if you like. */
   background-repeat: no-repeat;
 }
 
+.board {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 
 /*
 .draggable {
