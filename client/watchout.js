@@ -10,53 +10,65 @@ var astereoidData = [
 
 // var astereoidData = {0: ;
 
-
-
-var selection = d3.select(".board").selectAll("div").data(astereoidData)
-
 var fnKey = function (d) {
   console.log('d', d);
 
 };
-console.log(selection)
 
 
-// console.log(selection)
+var selection;
+var width = 100;
 
-// ENTER
-selection
-  .enter()
-  .append("svg")
-  .attr("width", 100)
-  .attr("height", 100)  
-  .append("image")
-  .attr("width", 100)
-  .attr("height", 100)
-  .attr("xlink:href", "asteroid.png")
+var initializeAsteroids = function() {
+  selection = d3.select(".board").selectAll("div").data(astereoidData)
+
+  console.log(selection);
+
+  // console.log(selection)
 
 
-// EXIT
-selection
-  .exit()
-  .remove();
+
+  // ENTER
+  selection
+    .enter()
+    .append("svg")
+    .attr("width", width)
+    .attr("height", 100)  
+    .append("image")
+    .attr("width", width)
+    .attr("height", 100)
+    .attr("xlink:href", "asteroid.png");
+
+  // EXIT
+  selection
+    .exit()
+    .remove();
+};
+
+initializeAsteroids();
+
+
+var update = function () {
+  console.log('update');
+  // selection
+    // .attr();
+    // no appaending allowed in here.
+  width += 10;
+  selection.transition().duration(1000).attr("width", width)
+};
 
 
 var timer;
 var updatePositions = function(time) {
+  update();
   timer = setInterval( function(){
-    console.log('BANG!')
-
-    selection
-
-
-
-
-
-  },time)
-}
+    console.log('BANG!');
+    update();
+  },time);
+};
 
 var stopTimer = function() {
   clearInterval(timer);
-}
+};
 
 updatePositions(1000);
