@@ -7,8 +7,16 @@ body, html {
   background-color: #ffe6cc;
   margin: 0;
   padding: 0;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+  font-size: 14pt;
 }
 
+h1 {
+  float: right;
+  padding-right: 20px;
+  font-size: 40pt;
+}
 .scoreboard {
   padding-left: 20px;
   padding-top: 5px;
@@ -17,7 +25,6 @@ body, html {
 }
 
 .asteroid {
-  /*background-color:black;*/
   width: 100%;
   height: 100px;
   background-image: url('asteroid.png');
@@ -31,7 +38,20 @@ body, html {
   height: 100%;
 }
 
-/*
-.draggable {
-  cursor: move;
-}*/
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to { 
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.title-rot {
+  margin-left: 7px;
+  -webkit-animation-name: rotate; 
+  -webkit-animation-duration: 5s; 
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  transform: translate;s
+}

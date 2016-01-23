@@ -28,20 +28,19 @@ $(window).on('load', function(){
     $('body').css('height', boardHeight);
     $('body').css('width', boardWidth);
 
-    circleSize = Math.floor((boardHeight + boardWidth) / 100)
+    circleSize = Math.floor((boardHeight + boardWidth) / 100);
 
     d3.select('.board').selectAll('circle')
       .attr("r", circleSize);
-  }
+  };
 
   resizeBody();
 
   $(window).on('resize', function(){
     resizeBody();
-  })
+  });
 
   // initiate asteroids data here with random creator!
-
   var astereoidData = [
     {x: 600, y: 400},
     {x: 600, y: 400},
@@ -75,21 +74,14 @@ $(window).on('load', function(){
       .attr("top", '1000px')
       .attr("left", '1000px')  
       .attr("width", circleWidth)  
-      .attr("height", 100)
-
-      // Image code
-      // .append('image')
-      // .attr("width", "100px")
-      // .attr("height", "100px")
-      // .attr("xlink:href", "asteroid.png");
-
-      // position editing here
+      .attr("height", 100);
 
     // EXIT
     selection
       .exit()
       .remove();
   };
+
   initializeAsteroids();
 
 
@@ -100,14 +92,14 @@ $(window).on('load', function(){
   // add dragability to asteroid
   // add element to d3 .board
   var addDraggableElement = function() {
-    console.log('adds draggable elemt')
     d3.select(".board").append("image")
       .attr("x", mouseStartPosition[0])
       .attr("y", mouseStartPosition[1])
       .attr("height", cursorSize + "px")
       .attr("width", cursorSize + "px")
-      .attr("xlink:href", "asteroid.png")
-  }
+      .attr("xlink:href", "asteroid.png");
+  };
+
   addDraggableElement();
 
   // declare mover function
@@ -118,7 +110,7 @@ $(window).on('load', function(){
     d3.select('image')
       .attr("x", xPos)
       .attr("y", yPos);
-  }
+  };
   // initiate drag listener
   var drag = d3.behavior.drag()
     .on("drag", function(){
@@ -129,15 +121,13 @@ $(window).on('load', function(){
 
   var recordNewMousePosition = function(x, y) {
     // x value
-
     x = x + (cursorSize / 2);
     y = y + (cursorSize / 2);
-
-
     mousePositionData[0] = x;
+
     // y value
     mousePositionData[1] = y;
-  }
+  };
 
   var update = function () {
     console.log(boardWidth);
@@ -148,7 +138,7 @@ $(window).on('load', function(){
 
     selection
       .transition()
-      .duration(timeInterval - durationScale * currentScore)
+      .duration(Math.max(200, timeInterval - durationScale * 10 * currentScore))
       .delay(function(d) {
         return (d.x / 5) * ( Math.random() * 10 ); 
       })
@@ -168,12 +158,11 @@ $(window).on('load', function(){
           if (dist <= (circleSize + currentScore * circleScale + cursorSize * 1.2) / 2) {
             throttledCollisionUpdate();
           }
-        }
+        };
       })
       .attr("cx", function(d) {return d.x})
       .attr("cy", function(d) {return d.y})
       .attr("r", circleSize + currentScore * circleScale);
-      //.attr("r", circleSize);
   };
 
   var collisionUpdate = function() {
@@ -181,17 +170,15 @@ $(window).on('load', function(){
     numCollisions++;
     d3.select(".current").select("span").text(0);
     d3.select(".collisions").select("span").text(numCollisions);
-  }
+  };
 
   var throttledCollisionUpdate = _.throttle(collisionUpdate, 500);
-
 
   // init timer
   var timer;
   var updatePositions = function(time) {
     update();
     timer = setInterval( function(){
-      console.log('BANG!');
       update();
     },time);
   };
@@ -201,7 +188,6 @@ $(window).on('load', function(){
 
   updatePositions(timeInterval);
 
-
   setInterval(function(){
     currentScore++;
     if (currentScore > highScore) {
@@ -209,29 +195,5 @@ $(window).on('load', function(){
       d3.select('.highscore').select('span').text(currentScore);
     }
     d3.select('.current').select('span').text(currentScore);
-  }, 1000)
-
-
-
-
-
-})
-
-
-
-
-// $(window).on('resize', function(){
-//   var cssWidthRule = $(window).width();
-//   $('body').css('width', cssWidthRule);
-// });
-
-
-
-
-
-
-
-
-
-
-
+  }, 1000);
+});
