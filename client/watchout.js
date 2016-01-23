@@ -11,9 +11,16 @@ var mouseStartPosition = [300, 100];
 var circleSize = 40;
 var cursorSize = 50;
 var timeInterval = 800;
+var currentScore = 0;
+var highScore = 0;
+var numCollisions = 0;
+
 // initiate asteroids data here with random creator!
 
 var astereoidData = [
+  {x: 600, y: 400},
+  {x: 600, y: 400},
+  {x: 600, y: 400},
   {x: 600, y: 400},
   {x: 600, y: 400},
   {x: 600, y: 400},
@@ -156,7 +163,10 @@ var update = function () {
 
         // console.log(dist);
         if (dist <= (circleSize + cursorSize) / 2) {
-          console.log("COLLIDED");
+          currentScore = 0;
+          numCollisions++;
+          d3.select(".current").select("span").text(0);
+          d3.select(".collisions").select("span").text(numCollisions);
         }
 
 
@@ -184,7 +194,14 @@ var stopTimer = function() {
 updatePositions(timeInterval);
 
 
-
+setInterval(function(){
+  currentScore++;
+  if (currentScore > highScore) {
+    highScore++;
+    d3.select('.highscore').select('span').text(currentScore);
+  }
+  d3.select('.current').select('span').text(currentScore);
+}, 1000)
 
 
 
