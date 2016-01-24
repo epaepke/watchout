@@ -6,7 +6,7 @@ $(window).on('load', function(){
 
   var ratesArray = [];
 
-  var rateScalingFactor = 20;
+  var rateScalingFactor = 10;
   var rateHeight = 15;
   var verticalDistance = 5;
 
@@ -56,13 +56,18 @@ $(window).on('load', function(){
       })
       .attr('width', function(d, i){
         console.log(d, i);
-        return Math.min(500, d.rate * rateScalingFactor)
+        // return Math.min(500, d.rate * rateScalingFactor)
+        return 500, d.rate * rateScalingFactor
+
       })
       .attr('height', function(d) {
         return height / (ratesArray.length + 1) * 4 / 5;
       })
       .attr('y', function(d, i){
         return (i) * height / (ratesArray.length + 1);
+      })
+      .text( function(d){
+        return d.country;
       })
       .attr('x', 0)
   }
